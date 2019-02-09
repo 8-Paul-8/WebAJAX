@@ -27,13 +27,13 @@ public class LoginController {
     public List<User> fetchUsersByGroup(Group group) {
         List<User> userList = new ArrayList();
 
-        List<UserGroup> userGroupList = fetchUserGroups();
+       List<UserGroup> userGroupList = fetchUserGroups();
         for (UserGroup ug : userGroupList) {
-            if (ug.getGroup().equals(group)) {
+           if (group.getId() == ug.getGroup().getId()) {
+                System.out.println("user===>" + ug.getUser());
                 userList.add(ug.getUser());
             }
         }
-
         return userList;
     }
 

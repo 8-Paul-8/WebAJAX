@@ -18,11 +18,11 @@
         <h1>AJAX usage</h1>
         <form method="POST" action="index.jsp">
             <label for="group-select">Choose a Group:</label>
-            <select id="group-select" name="group-select" onclick="loadGroups()">
+            <select id="group-select" name="group-select" onchange="loadUsers()">
                 <option value="">--Please make a choice--</option>
                 <%
                     LoginController loco = new LoginController();
-                    
+
                     for (Group group : loco.fetchGroups()) {
                 %>
                 <option value="<%=group.getId()%>"><%=group.getName()%></option>
@@ -31,16 +31,10 @@
                 %>
             </select>
             <br>
-<!--            <input type="hidden" id="populateUsers" value="">
             <label for="user-select">Choose a User:</label>
-            <select id="user-select" name="user-select" onclick="loadUsers()">
+            <select id="user-select" name="user-select" onchange="doSomething()">
                 <option value="">--Please make a choice--</option>
-                <%
-                    //for (User user : loco.fetchUsersByGroup()) {
-                    //    out.print("<option value=\"" + user.getId() + "\">" + user.getName() + "</option>");
-                    //}
-                %>
-            </select>-->
+            </select>
             <br>
             <p id="groupSelected"></p>
             <p id="userSelected"></p>
@@ -48,30 +42,24 @@
         </form>
 
         <script>
-
-            function loadGroups() {
+            function loadUsers() {
                 let e = document.getElementById("group-select").value;
                 let xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
+                        // First reset the option list
+                        document.getElementById("user-select").innerText = null;
+                        // Now re-populate it with new data
+                        document.getElementById("user-select").innerHTML = "<option value=''>--Please make a choice--</option>" + this.responseText;
                         document.getElementById("groupSelected").innerHTML = e;
-                        //document.getElementById("user-select").innerHTML = e;
                     }
                 };
-                xhttp.open("GET", "test.jsp?value=1&name=maria", true);
+                xhttp.open("POST", "fetchUsersByGroup.jsp?grpId=" + e, true);
                 xhttp.send();
             }
 
-            function loadUsers() {
-                //let e = document.getElementById("user-select").value;
-                let xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        document.getElementById("myheading").innerHTML = xhttp.responseText;
-                    }
-                };
-                xhttp.open("GET", "test.txt", true);
-                xhttp.send();
+            function doSomething() {
+                document.getElementById("userSelected").innerHTML = document.getElementById("user-select").value;
             }
         </script>
     </body>
