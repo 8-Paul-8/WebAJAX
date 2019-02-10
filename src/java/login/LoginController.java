@@ -30,7 +30,6 @@ public class LoginController {
        List<UserGroup> userGroupList = fetchUserGroups();
         for (UserGroup ug : userGroupList) {
            if (group.getId() == ug.getGroup().getId()) {
-                System.out.println("user===>" + ug.getUser());
                 userList.add(ug.getUser());
             }
         }
